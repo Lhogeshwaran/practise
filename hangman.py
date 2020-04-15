@@ -2,8 +2,13 @@
 
 import random
 import sys
+import os
 
-words = ['placebo', 'earth', 'sanity', 'python']
+# words = ['placebo', 'earth', 'sanity', 'python']
+
+f = open(os.path.join(os.getcwd(), 'data_files/hangman_words.txt'), 'r')
+words = [l.strip('\n') for l in f]
+f.close()
 
 word = random.choice(words)
 
@@ -17,7 +22,8 @@ print('You have 8 guesses left.')
 
 while peding_guess >= 0:
 
-  guess = input('Enter your guess...')
+  if peding_guess > 0:
+    guess = input('Enter your guess...')[0]
 
   if guess in word and peding_guess > 0:
     blanks[word.index(guess)] = guess
@@ -37,5 +43,5 @@ while peding_guess >= 0:
     continue
 
   else:
-    (print('Game over!\nYou do not have any more guesses left!'))
+    (print(f'Game over!\nYou do not have any more guesses left!\nThe word was "{word}".'))
     break
