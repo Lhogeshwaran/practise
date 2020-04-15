@@ -7,16 +7,37 @@ D.add("abppp")  # Multiple correct words.
 ### D = {"no", "possible", "words"}  # No combinations.
 
 # Word longer than S can be automatically ignored.
-E = {x: len(x) for x in D if len(x)<=len(S)}
+#E = {x: len(x) for x in D if len(x)<=len(S)}
 
 # As the goal is to find the longest word, let's sort the words in descending order.
 # However, as Google only offers python 3.5 for the challenge, ordering within dict is not an option!! 
-F = {k: v for k, v in sorted(E.items(), key=lambda item: item[1], reverse=True)}
-
-#S_ls = [x for x in S]
+#F = {k: v for k, v in sorted(E.items(), key=lambda item: item[1], reverse=True)}
+E = [x for x in sorted(D, key=lambda i: len(i), reverse=True) if len(x) <= len(S)]
 
 present_words = {}
 
+for i in E:
+
+  checked_indexes = []
+
+  for j in i:
+
+    if i.index(j) == 0:
+      if j in S:
+        checked_indexes.append(S.index(j))
+      else:
+        checked_indexes = [0]
+
+    else:
+      if j in S[checked_indexes[-1]+1:]:
+        checked_indexes.append(S[checked_indexes[-1]+1:].index(j)+checked_indexes[-1]+1)
+
+    word = ''.join([S[x] for x in checked_indexes])
+
+    if word == i:
+      present_words[word] = len(word)
+
+''' Replacing dict with list to reduce memory usage.
 for k, v in F.items():
 
     checked_indexes = []
@@ -37,8 +58,9 @@ for k, v in F.items():
 
         if word == k:
             present_words[word] = len(word)
+'''
 
-if bool(present_words) == True:
+if bool(present_words):
     answer = [key for m in [max(present_words.values())] for key,val in present_words.items() if val == m]
 else:
     answer = ""
