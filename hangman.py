@@ -16,6 +16,8 @@ blanks = ['_' for i in range(len(word))]
 
 peding_guess = 8
 
+guessed_words = set()
+
 print('Welcome to hangman!')
 print(f'Your word looks like this {" ".join(blanks)}')
 print('You have 8 guesses left.')
@@ -24,6 +26,13 @@ while peding_guess >= 0:
 
   if peding_guess > 0:
     guess = input('Enter your guess...')[0]
+    if guess in guessed_words:
+      print('Word already entered.')
+      print(f'Entered words ... {"-".join(sorted(list(guessed_words)))}')
+      print(f'Your word now looks like this {" ".join(blanks)}')
+      print(f'You still have {peding_guess} guesses left.')
+      continue
+    guessed_words.add(guess)
 
   if guess in word and peding_guess > 0:
     blanks[word.index(guess)] = guess
