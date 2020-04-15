@@ -65,7 +65,8 @@ if bool(present_words):
 else:
     answer = ""
 
-print(f"The word is: {answer}")
+
+print(f"The word is: {', '.join([x for x in answer])}")
 
 
 def sleep_in(weekday, vacation):
